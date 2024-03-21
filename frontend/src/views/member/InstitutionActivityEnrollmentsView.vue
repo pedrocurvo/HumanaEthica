@@ -58,6 +58,12 @@ export default class InstitutionActivityEnrollmentsView extends Vue {
       width: '50%',
     },
     {
+      text: 'Participating',
+      value: 'participating',
+      align: 'left',
+      width: '5%',
+    },
+    {
       text: 'Application Date',
       value: 'enrollmentDateTime',
       align: 'left',
@@ -107,28 +113,19 @@ export default class InstitutionActivityEnrollmentsView extends Vue {
 
 // getName() { console.log("1234567"); return "nome";}
 
-  async fetchVolunteerName(volunteerId: number){
-    const volunteer = await RemoteServices.getVolunteerById(volunteerId);
-    console.log(volunteer.name);
-    return volunteer.name;
-  }
+  // async fetchVolunteerName(volunteerId: number){
+  //   const volunteer = await RemoteServices.getVolunteerById(volunteerId);
+  //   console.log(volunteer.name);
+  //   return volunteer.name;
+  // }
 
   async getActivities() {
     await this.$store.dispatch('setActivity', null);
     this.$router.push({ name: 'institution-activities' }).catch(() => {});
   }
 
-  async selectParticipant(enrollment: Enrollment) {
-    await this.$store.dispatch('setEnrollment', enrollment);
-    this.$router.push({ name: 'enrollment-details' }).catch(() => {});
-  }
-
-  isVolunteerParticipating(enrollment: Enrollment) {
-    return enrollment.volunteerId === this.$store.getters.getUser.id;
-  }
-
   activityLimitReached() {
-    return this.activity.participantsNumberLimit;
+    return this.activity.participantsNumberLimit == this.activity.participations.length;
   }
 
 }
