@@ -27,7 +27,7 @@
           </v-chip>
         </template>
         <template v-slot:[`item.action`]="{ item }">
-          <v-tooltip v-if="item.state === 'APPROVED'" bottom>
+          <v-tooltip v-show="item.state === 'APPROVED'" bottom>
             <template v-slot:activator="{ on }">
               <v-icon
                 class="mr-2 action-button"
@@ -40,6 +40,21 @@
             </template>
             <span>Report Activity</span>
           </v-tooltip>
+          <v-tooltip v-show="item.state === 'APPROVED'" bottom> 
+            <template v-slot:activator="{ on, attrs }">
+              <v-icon
+                v-bind="attrs"
+                v-on="on"
+                class="mr-2 action-button"
+                color="blue"
+                data-cy="applyButton"
+                @click="applyForActivity(item)"
+              >
+                mdi-login
+              </v-icon>
+            </template>
+            <span>Apply for Activity</span>
+          </v-tooltip>
         </template>
       </v-data-table>
     </v-card>
@@ -51,6 +66,8 @@ import { Component, Vue } from 'vue-property-decorator';
 import RemoteServices from '@/services/RemoteServices';
 import Activity from '@/models/activity/Activity';
 import { show } from 'cli-cursor';
+import Volunteer from '@/models/volunteer/Volunteer';
+import Enrollment from '@/models/enrollment/Enrollment';
 
 @Component({
   methods: { show },
@@ -146,6 +163,22 @@ export default class VolunteerActivitiesView extends Vue {
       }
     }
   }
+
+  async applyForActivity(activity: Activity) {
+  if (activity.id !== null) {
+    try {
+      const result = await RemoteServices.applyForActivity(
+        this.$store.getters.getUser.id,
+        activity.id,
+      );
+      this.activities = this.activities.filter((a) => a.id !== activity.id);
+      this.activities.unshift(result);
+
+    } catch (error) {
+      await this.$store.dispatch('error', error);
+    }
+  }
+}
 }
 </script>
 
