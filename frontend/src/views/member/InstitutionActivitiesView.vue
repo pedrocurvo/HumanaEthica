@@ -105,6 +105,14 @@ export default class InstitutionActivitiesView extends Vue {
       align: 'left',
       width: '5%',
     },
+
+    { 
+      text: 'Applications',
+      value: 'numberOfEnrollments',
+      align: 'left',
+      width: '5%',
+    },
+
     {
       text: 'Themes',
       value: 'themes',
