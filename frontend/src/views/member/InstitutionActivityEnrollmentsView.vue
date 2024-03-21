@@ -35,6 +35,7 @@
       <v-tooltip bottom>
         <template v-slot:activator="{ on }">
           <v-icon
+            v-if="!item.participating && !activityLimitReached()"
             v-on="on"
             class="mr-2 action-button"
             data-cy="selectParticipant"
@@ -148,6 +149,11 @@ export default class InstitutionActivityEnrollmentsView extends Vue {
     await this.$store.dispatch('setActivity', null);
     this.$router.push({ name: 'institution-activities' }).catch(() => {});
   }
+
+  activityLimitReached() {
+    return this.activity.participantsNumberLimit == this.activity.participations.length;
+  }
+
 }
 
 </script>
