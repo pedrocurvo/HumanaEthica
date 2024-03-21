@@ -2,6 +2,7 @@ package pt.ulisboa.tecnico.socialsoftware.humanaethica.activity.dto;
 
 import pt.ulisboa.tecnico.socialsoftware.humanaethica.activity.domain.Activity;
 import pt.ulisboa.tecnico.socialsoftware.humanaethica.institution.dto.InstitutionDto;
+import pt.ulisboa.tecnico.socialsoftware.humanaethica.participation.dto.ParticipationDto;
 import pt.ulisboa.tecnico.socialsoftware.humanaethica.theme.dto.ThemeDto;
 import pt.ulisboa.tecnico.socialsoftware.humanaethica.utils.DateHandler;
 
@@ -20,6 +21,8 @@ public class ActivityDto {
     private String creationDate;
     private List<ThemeDto> themes;
     private InstitutionDto institution;
+    private List<ParticipationDto> participations;
+
 
     public ActivityDto(){
     }
@@ -35,6 +38,10 @@ public class ActivityDto {
                 .map(theme->new ThemeDto(theme,false, true, false))
                 .toList();
 
+        this.participations = activity.getParticipations().stream()
+                .map(participation->new ParticipationDto(participation))
+                .toList();
+
         setState(activity.getState().name());
         setCreationDate(DateHandler.toISOString(activity.getCreationDate()));
         setStartingDate(DateHandler.toISOString(activity.getStartingDate()));
@@ -45,6 +52,8 @@ public class ActivityDto {
                 setInstitution(new InstitutionDto(activity.getInstitution(), false, false));
 
         }
+
+        
     }
 
     public void setThemes(List<ThemeDto> themes) {
@@ -141,6 +150,14 @@ public class ActivityDto {
         this.participantsNumberLimit = participantsNumberLimit;
     }
 
+    public List<ParticipationDto> getParticipations(){
+        return this.participations;
+    }
+
+    public void setParticipations(List<ParticipationDto> participations){
+        this.participations = participations;
+    }
+
     @Override
     public String toString() {
         return "ActivityDto{" +
@@ -155,6 +172,7 @@ public class ActivityDto {
                 ", state='" + state + '\'' +
                 ", creationDate='" + creationDate + '\'' +
                 ", themes=" + themes +
+                ", participations=" + participations +
                 ", institution=" + institution +
                 '}';
     }
