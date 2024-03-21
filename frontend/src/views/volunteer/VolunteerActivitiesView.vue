@@ -40,7 +40,7 @@
             </template>
             <span>Report Activity</span>
           </v-tooltip>
-          <v-tooltip v-show="item.state === 'APPROVED'" bottom> 
+          <v-tooltip v-show="item.state === 'APPROVED' && !enrollmentPeriodHasEnded(item)" bottom> 
             <template v-slot:activator="{ on, attrs }">
               <v-icon
                 v-bind="attrs"
@@ -179,6 +179,20 @@ export default class VolunteerActivitiesView extends Vue {
     }
   }
 }
+
+  async enrollmentPeriodHasEnded(activity: Activity) {
+    const now = new Date();
+    const applicationDeadline = new Date(activity.applicationDeadline);
+  
+    if (now > applicationDeadline) {
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
+
+
 }
 </script>
 
