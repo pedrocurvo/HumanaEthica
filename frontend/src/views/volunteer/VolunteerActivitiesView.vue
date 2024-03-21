@@ -40,7 +40,7 @@
             </template>
             <span>Report Activity</span>
           </v-tooltip>
-          <v-tooltip v-show="item.state === 'APPROVED' && !enrollmentPeriodHasEnded(item)" bottom> 
+          <v-tooltip v-show="item.state === 'APPROVED' && !enrollmentPeriodHasEnded(item) && !hasAlreadyApplied(item)" bottom> 
             <template v-slot:activator="{ on, attrs }">
               <v-icon
                 v-bind="attrs"
@@ -74,6 +74,7 @@ import Enrollment from '@/models/enrollment/Enrollment';
 })
 export default class VolunteerActivitiesView extends Vue {
   activities: Activity[] = [];
+  enrollments: Enrollment[] = [];
   search: string = '';
   headers: object = [
     {
@@ -143,6 +144,7 @@ export default class VolunteerActivitiesView extends Vue {
     await this.$store.dispatch('loading');
     try {
       this.activities = await RemoteServices.getActivities();
+      this.enrollments = await RemoteServices.getVolunteerEnrollments(this.$store.getters.getUser.id);
     } catch (error) {
       await this.$store.dispatch('error', error);
     }
@@ -179,6 +181,11 @@ export default class VolunteerActivitiesView extends Vue {
     }
   }
 }
+
+  async hasAlreadyApplied(activity: Activity) {
+      return this.enrollments.some(enrollment => 
+        enrollment.activityId == activity.id);
+    }
 
   async enrollmentPeriodHasEnded(activity: Activity) {
     const now = new Date();
