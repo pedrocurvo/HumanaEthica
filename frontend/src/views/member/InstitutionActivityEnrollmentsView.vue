@@ -28,9 +28,28 @@
           >
         </v-card-title>
       </template>     
+
+      
+
+    <template v-slot:[`item.action`]="{ item }">
+      <v-tooltip bottom>
+        <template v-slot:activator="{ on }">
+          <v-icon
+            v-on="on"
+            class="mr-2 action-button"
+            data-cy="selectParticipant"
+            @click="selectParticipant(item)"
+          >
+            mdi-check
+          </v-icon>
+        </template>
+        <span>Select Participant</span>
+      </v-tooltip>
+    </template>
   </v-data-table>
   </v-card>
 </template>
+
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
@@ -66,6 +85,12 @@ export default class InstitutionActivityEnrollmentsView extends Vue {
     {
       text: 'Application Date',
       value: 'enrollmentDateTime',
+      align: 'left',
+      width: '5%',
+    },
+    {
+      text: 'Action',
+      value: 'action',
       align: 'left',
       width: '5%',
     },
@@ -123,11 +148,6 @@ export default class InstitutionActivityEnrollmentsView extends Vue {
     await this.$store.dispatch('setActivity', null);
     this.$router.push({ name: 'institution-activities' }).catch(() => {});
   }
-
-  activityLimitReached() {
-    return this.activity.participantsNumberLimit == this.activity.participations.length;
-  }
-
 }
 
 </script>
@@ -145,3 +165,4 @@ export default class InstitutionActivityEnrollmentsView extends Vue {
   margin-top: 8px;
 }
 </style>
+
