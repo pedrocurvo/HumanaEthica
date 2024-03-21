@@ -100,4 +100,9 @@ public class Enrollment {
             throw new HEException(ENROLLMENT_AFTER_DEADLINE);
         }
     }
+
+    public boolean isParticipating(){
+        return this.activity.getParticipations().stream()
+                .anyMatch(participation -> participation.getVolunteer() == this.volunteer);
+    }
 }
