@@ -28,7 +28,7 @@
           >
         </v-card-title>
       </template>     
-    </v-data-table>
+  </v-data-table>
   </v-card>
 </template>
 
@@ -46,6 +46,12 @@ export default class InstitutionActivityEnrollmentsView extends Vue {
 
   headers: object = [
     {
+      text: 'Name',
+      value: 'volunteerName' ,
+      align: 'left',
+      width: '5%',
+    },  
+    {
       text: 'Motivation',
       value: 'motivation',
       align: 'left',
@@ -57,12 +63,7 @@ export default class InstitutionActivityEnrollmentsView extends Vue {
       align: 'left',
       width: '5%',
     },
-    {
-      text: 'Volunteer name',
-      value: 'fetchVolunteerName(enrollment.volunteerId)',
-      align: 'left',
-      width: '5%',
-    },
+  
   ];
 
   async created() {
@@ -88,13 +89,13 @@ export default class InstitutionActivityEnrollmentsView extends Vue {
 //       let enrollments = await RemoteServices.getActivityEnrollments(this.activity.id);
 //       // Fetch volunteer names for each enrollment
 //       this.enrollments = await Promise.all(enrollments.map(async (enrollment: Enrollment) => {
-//         // try {
-//         const volunteer = await RemoteServices.getVolunteer(enrollment.volunteerId);
+//       try {
+//         const volunteer = await RemoteServices.getVolunteerById(enrollment.volunteerId);
 //         return { ...enrollment, volunteerName: volunteer.name };
-//         // } catch (error) {
-//         //   console.error("Failed to fetch volunteer name", error);
-//         //   return { ...enrollment, volunteerName: "Unknown" }; // Handle error case
-//         // }
+//         } catch (error) {
+//           console.error("Failed to fetch volunteer name", error);
+//           return { ...enrollment, volunteerName: "Unknown" }; // Handle error case
+//         }
 //       }));
 //     } catch (error) {
 //       console.error('Failed to fetch enrollments', error);
@@ -104,8 +105,11 @@ export default class InstitutionActivityEnrollmentsView extends Vue {
 //   }
 // }
 
+// getName() { console.log("1234567"); return "nome";}
+
   async fetchVolunteerName(volunteerId: number){
     const volunteer = await RemoteServices.getVolunteerById(volunteerId);
+    console.log(volunteer.name);
     return volunteer.name;
   }
 
@@ -113,6 +117,20 @@ export default class InstitutionActivityEnrollmentsView extends Vue {
     await this.$store.dispatch('setActivity', null);
     this.$router.push({ name: 'institution-activities' }).catch(() => {});
   }
+
+  async selectParticipant(enrollment: Enrollment) {
+    await this.$store.dispatch('setEnrollment', enrollment);
+    this.$router.push({ name: 'enrollment-details' }).catch(() => {});
+  }
+
+  isVolunteerParticipating(enrollment: Enrollment) {
+    return enrollment.volunteerId === this.$store.getters.getUser.id;
+  }
+
+  activityLimitReached() {
+    return this.activity.participantsNumberLimit;
+  }
+
 }
 
 </script>
