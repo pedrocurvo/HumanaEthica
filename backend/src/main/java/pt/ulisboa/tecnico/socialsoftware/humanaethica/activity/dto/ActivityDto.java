@@ -12,6 +12,7 @@ public class ActivityDto {
     private Integer id;
     private String name;
     private String region;
+    //private Integer numberOfParticipations;
     private Integer participantsNumberLimit;
     private String description;
     private String startingDate;
@@ -31,6 +32,7 @@ public class ActivityDto {
         setId(activity.getId());
         setName(activity.getName());
         setRegion(activity.getRegion());
+        //setnumberOfParticipations(activity.getnumberOfParticipations());
         setParticipantsNumberLimit(activity.getParticipantsNumberLimit());
         setDescription(activity.getDescription());
 
@@ -141,7 +143,13 @@ public class ActivityDto {
         this.institution = institution;
     }
 
+    //public Integer numberOfParticipations() {
+    //    return numberOfParticipations;
+    //}
 
+    //public void numberOfParticipations(Integer numberOfParticipations) {
+    //    this.numberOfParticipations = numberOfParticipations;
+    //}
     public Integer getParticipantsNumberLimit() {
         return participantsNumberLimit;
     }
@@ -164,6 +172,7 @@ public class ActivityDto {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", region='" + region + '\'' +
+                //", numberOfParticipations=" + numberOfParticipations +
                 ", participantsNumber=" + participantsNumberLimit +
                 ", description='" + description + '\'' +
                 ", startingDate='" + startingDate + '\'' +

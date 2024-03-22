@@ -27,10 +27,7 @@
             >Activities</v-btn
           >
         </v-card-title>
-      </template>     
-
-      
-
+      </template>
     <template v-slot:[`item.action`]="{ item }">
       <v-tooltip bottom>
         <template v-slot:activator="{ on }">
@@ -48,6 +45,13 @@
       </v-tooltip>
     </template>
   </v-data-table>
+    <participation-dialog
+        v-if="currentParticipation && editParticipationSelectionDialog"
+        v-model="editParticipationSelectionDialog"
+        :participation="currentParticipation"
+        v-on:make-participation="makeParticipation"
+        v-on:close-participation-dialog="onCloseParticipationDialog"
+    />
   </v-card>
 </template>
 
@@ -57,14 +61,31 @@ import { Component, Vue } from 'vue-property-decorator';
 import RemoteServices from '@/services/RemoteServices';
 import Activity from '@/models/activity/Activity';
 import Enrollment from '@/models/enrollment/Enrollment';
+import ActivityDialog from '@/views/member/ActivityDialog.vue';
+import ParticipationSelectionDialog from '@/views/member/ParticipationSelectionDialog.vue';
 import Participation from '@/models/participation/Participation';
+import Institution from '@/models/institution/Institution';
 
-@Component({})
+
+@Component({
+  components: {
+    'activity-dialog': ActivityDialog,
+    'participation-dialog': ParticipationSelectionDialog,
+  },
+})
 export default class InstitutionActivityEnrollmentsView extends Vue {
   activity!: Activity;
   enrollments: Enrollment[] = [];
   participations: Participation[] = [];
   search: string = '';
+
+  // [BS] not sure
+
+  enrollment: Enrollment = new Enrollment();
+
+  currentParticipation: Participation | null = null;
+  editParticipationSelectionDialog: boolean = false;
+
 
   headers: object = [
     {
@@ -92,9 +113,10 @@ export default class InstitutionActivityEnrollmentsView extends Vue {
       width: '5%',
     },
     {
-      text: 'Action',
+      text: 'Actions',
       value: 'action',
       align: 'left',
+      sortable: false,
       width: '5%',
     },
   
@@ -153,6 +175,26 @@ export default class InstitutionActivityEnrollmentsView extends Vue {
   async getActivities() {
     await this.$store.dispatch('setActivity', null);
     this.$router.push({ name: 'institution-activities' }).catch(() => {});
+  }
+
+  //[BS]
+  selectParticipant(participation: Participation) {
+    this.currentParticipation = participation;
+    this.editParticipationSelectionDialog = true;
+  }
+
+  onCloseParticipationDialog() {
+    this.currentParticipation = null;
+    this.editParticipationSelectionDialog = false;
+  }
+
+  async makeParticipation(participation: Participation) {
+    this.enrollment.participations = this.enrollment.participations.filter(
+        (a) => a.id !== participation.id, // replace wip
+    );
+    this.enrollment.participations.unshift(participation);
+    this.editParticipationSelectionDialog = false;
+    this.currentParticipation = null;
   }
 
   activityLimitReached() {
