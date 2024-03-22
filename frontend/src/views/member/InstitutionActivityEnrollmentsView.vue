@@ -46,9 +46,9 @@
     </template>
   </v-data-table>
     <participation-dialog
-        v-if="currentParticipation && editParticipationSelectionDialog"
+        v-if="participations && editParticipationSelectionDialog"
         v-model="editParticipationSelectionDialog"
-        :participation="currentParticipation"
+        :participations="participations"
         v-on:make-participation="makeParticipation"
         v-on:close-participation-dialog="onCloseParticipationDialog"
     />
@@ -66,7 +66,7 @@ import ParticipationSelectionDialog from '@/views/member/ParticipationSelectionD
 import Participation from '@/models/participation/Participation';
 import Institution from '@/models/institution/Institution';
 
-
+//o dialog tem participation e enrollment
 @Component({
   components: {
     'activity-dialog': ActivityDialog,
@@ -80,10 +80,6 @@ export default class InstitutionActivityEnrollmentsView extends Vue {
   search: string = '';
 
   // [BS] not sure
-
-  enrollment: Enrollment = new Enrollment();
-
-  currentParticipation: Participation | null = null;
   editParticipationSelectionDialog: boolean = false;
 
 
@@ -189,10 +185,10 @@ export default class InstitutionActivityEnrollmentsView extends Vue {
   }
 
   async makeParticipation(participation: Participation) {
-    this.enrollment.participations = this.enrollment.participations.filter(
+    this.participations = this.participations.filter(
         (a) => a.id !== participation.id, // replace wip
     );
-    this.enrollment.participations.unshift(participation);
+    this.participations.unshift(participation);
     this.editParticipationSelectionDialog = false;
     this.currentParticipation = null;
   }
