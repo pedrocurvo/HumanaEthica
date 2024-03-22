@@ -40,7 +40,7 @@
             </template>
             <span>Report Activity</span>
           </v-tooltip>
-          <v-tooltip v-show="item.state === 'APPROVED' && !enrollmentPeriodHasEnded(item) && !hasAlreadyApplied(item)" bottom> 
+          <v-tooltip v-if="item.state === 'APPROVED' && !verifyInvariants(item)" bottom> 
             <template v-slot:activator="{ on, attrs }">
               <v-icon
                 v-bind="attrs"
@@ -144,7 +144,7 @@ export default class VolunteerActivitiesView extends Vue {
     await this.$store.dispatch('loading');
     try {
       this.activities = await RemoteServices.getActivities();
-      this.enrollments = await RemoteServices.getVolunteerEnrollments(this.$store.getters.getUser.id);
+      this.enrollments = await RemoteServices.getVolunteerEnrollments();
     } catch (error) {
       await this.$store.dispatch('error', error);
     }
@@ -182,24 +182,26 @@ export default class VolunteerActivitiesView extends Vue {
   }
 }
 
-  async hasAlreadyApplied(activity: Activity) {
-      return this.enrollments.some(enrollment => 
-        enrollment.activityId == activity.id);
-    }
+    // async hasAlreadyApplied(activity: Activity) {
+    //   console.log('hasAlreadyappplied')
+    //     return this.enrollments.some(enrollment => 
+    //       enrollment.activityId == activity.id);
+    //   }
 
-  async enrollmentPeriodHasEnded(activity: Activity) {
-    const now = new Date();
-    const applicationDeadline = new Date(activity.applicationDeadline);
-  
-    if (now > applicationDeadline) {
-      return true;
+    verifyInvariants(activity: Activity) {
+      console.log('verifyInvariants')
+      const now = new Date();
+      const applicationDeadline = new Date(activity.applicationDeadline);
+      const applied = this.enrollments.some(enrollment => enrollment.activityId == activity.id);
+      if (applied == true || now > applicationDeadline) {
+        console.log('hasAlreadyApplied: true')
+        return true;
+      }
+      else {
+        console.log('enrollmentPeriod: false')
+        return false;
+      }
     }
-    else {
-      return false;
-    }
-  }
-
-
 }
 </script>
 
