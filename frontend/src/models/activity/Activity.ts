@@ -7,7 +7,6 @@ export default class Activity {
   id: number | null = null;
   name!: string;
   region!: string;
-  //numberOfParticipations!: number;
   participantsNumberLimit!: number;
   themes: Theme[] = [];
   participations: Participation[] = [];
@@ -21,13 +20,14 @@ export default class Activity {
   formattedEndingDate!: string;
   applicationDeadline!: string;
   formattedApplicationDeadline!: string;
+  numberOfParticipations!: number;
 
   constructor(jsonObj?: Activity) {
     if (jsonObj) {
       this.id = jsonObj.id;
       this.name = jsonObj.name;
       this.region = jsonObj.region;
-      //this.numberOfParticipations = jsonObj.numberOfParticipations;
+      this.numberOfParticipations = jsonObj.numberOfParticipations;
       this.participantsNumberLimit = jsonObj.participantsNumberLimit;
       this.themes = jsonObj.themes.map((themes: Theme) => {
         return new Theme(themes);
