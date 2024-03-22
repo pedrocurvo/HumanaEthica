@@ -96,14 +96,14 @@ export default class ParticipationDialog extends Vue {
     if ((this.$refs.form as Vue & { validate: () => boolean }).validate()) {
       try {
         const result =
-
             this.editParticipation !== null
                 ? await RemoteServices.makeParticipation(
                     this.editParticipation.volunteerId,
                     this.editParticipation.activityId,
                 )
                 : await RemoteServices.updateEnrollment(
-                    this.enrollment.id
+                    this.enrollment.id,
+                    { participating: true }
                 );
         this.$emit('make-participation', result);
       } catch (error) {
