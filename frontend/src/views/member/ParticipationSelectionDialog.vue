@@ -1,10 +1,8 @@
 <template>
-  <v-dialog v-model="dialog" persistent width="1300">
+  <v-dialog v-model="dialog" persistent width="600">
     <v-card>
       <v-card-title>
-         <span class="headline" v-if="editParticipation === null">
-                Select Participant
-        </span>
+        <span class="headline">Select Participant</span>
       </v-card-title>
       <v-card-text>
         <v-form ref="form" lazy-validation>
