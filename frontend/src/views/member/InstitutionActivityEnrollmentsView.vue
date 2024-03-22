@@ -190,7 +190,7 @@ export default class InstitutionActivityEnrollmentsView extends Vue {
 
   async makeParticipation(participation: Participation) {
     this.enrollment.participations = this.enrollment.participations.filter(
-        (a) => a.id !== participation.id, // replace wip
+        p => p.id !== participation.id
     );
     this.enrollment.participations.unshift(participation);
     this.editParticipationSelectionDialog = false;
