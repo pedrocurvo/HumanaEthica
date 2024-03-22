@@ -76,6 +76,7 @@ import Institution from '@/models/institution/Institution';
 export default class InstitutionActivityEnrollmentsView extends Vue {
   activity!: Activity;
   enrollments: Enrollment[] = [];
+  participations: Participation[] = [];
   search: string = '';
 
   // [BS] not sure
@@ -128,6 +129,9 @@ export default class InstitutionActivityEnrollmentsView extends Vue {
       try {
         this.enrollments = await RemoteServices.getActivityEnrollments(
           this.activity.id,
+        );
+        this.participations = await RemoteServices.getActivityParticipations(
+          this.activity.id
         );
         } catch (error) {
         await this.$store.dispatch('error', error);
@@ -194,7 +198,7 @@ export default class InstitutionActivityEnrollmentsView extends Vue {
   }
 
   activityLimitReached() {
-    return this.activity.participantsNumberLimit == this.activity.participations.length;
+    return this.activity.participantsNumberLimit == this.participations.length;
   }
 
 }
