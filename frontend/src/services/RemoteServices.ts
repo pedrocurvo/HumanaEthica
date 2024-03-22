@@ -14,6 +14,7 @@ import Theme from '@/models/theme/Theme';
 import Enrollment from '@/models/enrollment/Enrollment';
 import Participation from '@/models/participation/Participation';
 import Assessment from '@/models/assessment/Assessment';
+import Participation from '@/models/participation/Participation';
 
 const httpClient = axios.create();
 httpClient.defaults.timeout = 100000;
@@ -617,6 +618,31 @@ export default class RemoteServices {
       });
   }
 
+  // [BS] work in progress (?) add a participation+volunteer to an activity
+
+  static async makeParticipation(volunteerId: number | null, activityId: number | null) {
+    return httpClient
+        .post('/participations', { volunteerId, activityId })
+        .then((response) => {
+          return new Participation(response.data);
+        })
+        .catch(async (error) => {
+          throw Error(await this.errorMessage(error));
+        });
+  }
+
+  // [BS] work in progress (?) make volunteer enrollment (participating) from false to true
+  // updating list of enrollments
+  static async updateEnrollment(enrollmentId: number | null) {
+    return httpClient
+        .put(`/enrollments/${enrollmentId}/participating`, { participating: true })
+        .then((response) => {
+          return response.data; // check if backend returns the updated list of enrollments
+        })
+        .catch(async (error) => {
+          throw Error(await this.errorMessage(error));
+        });
+  }
 
   // Error
 
