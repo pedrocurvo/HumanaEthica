@@ -48,7 +48,7 @@
                 class="mr-2 action-button"
                 color="blue"
                 data-cy="applyButton"
-                @click="applyForActivity(item)"
+                @click="newEnrollment(item)"
               >
                 mdi-login
               </v-icon>
@@ -57,6 +57,15 @@
           </v-tooltip>
         </template>
       </v-data-table>
+
+      <enrollment-dialog
+        v-if="currentActivity && editEnrollmentDialog"
+        v-model="editEnrollmentDialog"
+        :enrollment="currentEnrollment"
+        :activity="currentActivity"
+        v-on:save-enrollment="onSaveEnrollment"
+        v-on:close-enrollment-dialog="onCloseEnrollmentDialog"
+      />
     </v-card>
   </div>
 </template>
@@ -68,13 +77,22 @@ import Activity from '@/models/activity/Activity';
 import { show } from 'cli-cursor';
 import Volunteer from '@/models/volunteer/Volunteer';
 import Enrollment from '@/models/enrollment/Enrollment';
+import EnrollmentDialog from '@/views/volunteer/EnrollmentDialog.vue';
 
 @Component({
   methods: { show },
+  components: {
+    'enrollment-dialog': EnrollmentDialog,
+  },
 })
 export default class VolunteerActivitiesView extends Vue {
   activities: Activity[] = [];
   enrollments: Enrollment[] = [];
+
+  currentEnrollment: Enrollment | null = null;
+  currentActivity: Activity | null = null;
+  editEnrollmentDialog: boolean = false;
+
   search: string = '';
   headers: object = [
     {
@@ -167,20 +185,20 @@ export default class VolunteerActivitiesView extends Vue {
   }
 
   async applyForActivity(activity: Activity) {
-  if (activity.id !== null) {
-    try {
-      const result = await RemoteServices.applyForActivity(
-        this.$store.getters.getUser.id,
-        activity.id,
-      );
-      this.activities = this.activities.filter((a) => a.id !== activity.id);
-      this.activities.unshift(result);
+  // if (activity.id !== null) {
+  //   try {
+  //     const result = await RemoteServices.applyForActivity(
+  //       this.$store.getters.getUser.id,
+  //       activity.id,
+  //     );
+  //     this.activities = this.activities.filter((a) => a.id !== activity.id);
+  //     this.activities.unshift(result);
 
-    } catch (error) {
-      await this.$store.dispatch('error', error);
-    }
+  //   } catch (error) {
+  //     await this.$store.dispatch('error', error);
+  //   }
+  // }
   }
-}
 
     // async hasAlreadyApplied(activity: Activity) {
     //   console.log('hasAlreadyappplied')
@@ -202,6 +220,32 @@ export default class VolunteerActivitiesView extends Vue {
         return false;
       }
     }
+
+  newEnrollment(activity: Activity){
+    this.currentActivity = activity;
+    this.currentEnrollment = new Enrollment();
+    this.editEnrollmentDialog = true;
+  }
+
+  onCloseEnrollmentDialog() {
+    this.currentEnrollment = null;
+    this.currentActivity = null;
+    this.editEnrollmentDialog = false;
+  }
+
+  async onSaveEnrollment(enrollment: Enrollment) {
+    // if (this.currentActivity?.enrollments) {
+    //   // Check if the enrollment ID is not already present in the currentActivity's enrollments
+    //   if (!this.currentActivity.enrollments.some(e => e.id === enrollment.id)) {
+    //     // Add the enrollment to the activity enrollments
+    //     this.currentActivity.enrollments.push(enrollment);
+    //   }
+    // }
+    this.editEnrollmentDialog = false;
+    this.currentActivity = null;
+    this.currentEnrollment = null;
+  }
+
 }
 </script>
 
