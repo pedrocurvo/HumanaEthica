@@ -44,7 +44,7 @@
             v-if="isValidMotivation(editEnrollment.motivation)"
             color="blue-darken-1"
             variant="text"
-            @click="updateEnrollment"
+            @click="createEnrollment"
             data-cy="saveEnrollment"
         >
           Save
@@ -102,26 +102,30 @@ export default class EnrollmentDialog extends Vue {
   get canSave(): boolean {
     return (
         this.cypressCondition ||
-        (!!this.editEnrollment.motivation)
+        (!!this.editEnrollment.motivation
+            && this.editEnrollment.motivation.length >= 10
+        )
     );
   }
 
-  async updateEnrollment() {
-    // TODO
-    // if ((this.$refs.form as Vue & { validate: () => boolean }).validate() && this.editEnrollment.id !== null && this.editActivity.id !== null) {
-    //   try {
-    //     const result = await RemoteServices.registerEnrollment(
-    //         this.$store.getters.getUser.id,
-    //         this.editActivity.id,
-    //         this.editEnrollment,
-    //     )
-
-    //     this.$emit('save-enrollment', result);
-    //   } catch (error) {
-    //     await this.$store.dispatch('error', error);
-    //   }
-    // }
+  async createEnrollment() {
+    if ((this.$refs.form as Vue & { validate: () => boolean }).validate()) {
+      try {
+        const result =
+            this.editActivity.id !== null && this.editEnrollment.id == null
+                ? await RemoteServices.createEnrollment(
+                    this.editActivity.id,
+                    this.editEnrollment,
+                )
+                : await this.$store.dispatch('error', 'Activity ID is null');
+        this.$emit('save-enrollment', result);
+      } catch (error) {
+        await this.$store.dispatch('error', error);
+      }
+    }
   }
+
+
 }
 </script>
 

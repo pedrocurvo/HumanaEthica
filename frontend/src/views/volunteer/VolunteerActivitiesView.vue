@@ -224,6 +224,8 @@ export default class VolunteerActivitiesView extends Vue {
   newEnrollment(activity: Activity){
     this.currentActivity = activity;
     this.currentEnrollment = new Enrollment();
+    this.currentEnrollment.activityId = activity.id;
+    this.currentEnrollment.volunteerId = this.$store.getters.getUser.id;
     this.editEnrollmentDialog = true;
   }
 
@@ -241,6 +243,7 @@ export default class VolunteerActivitiesView extends Vue {
     //     this.currentActivity.enrollments.push(enrollment);
     //   }
     // }
+
     this.editEnrollmentDialog = false;
     this.currentActivity = null;
     this.currentEnrollment = null;
