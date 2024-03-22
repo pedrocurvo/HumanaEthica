@@ -28,6 +28,9 @@
           {{ theme.completeName }}
         </v-chip>
       </template>
+      <template v-slot:[`item.numberOfParticipations`]="{ item }">
+        {{ item.numberOfParticipations }}
+      </template>
       <template v-slot:[`item.action`]="{ item }">
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
@@ -98,6 +101,12 @@ export default class InstitutionActivitiesView extends Vue {
       value: 'region',
       align: 'left',
       width: '5%',
+    },
+    {
+      text: 'Number of Participations',
+      value: 'numberOfParticipations',
+      align: 'left',
+      width: '10%',
     },
     {
       text: 'Participants Limit',
