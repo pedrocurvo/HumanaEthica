@@ -499,7 +499,7 @@ export default class RemoteServices {
       });
   }
 
-  static async registerParticipation(
+  static async createParticipation(
     userId: number,
     activityId: number,
   ): Promise<Participation> {
@@ -598,19 +598,6 @@ export default class RemoteServices {
         return response.data.map((theme: any) => {
           return new Theme(theme);
         });
-      })
-      .catch(async (error) => {
-        throw Error(await this.errorMessage(error));
-      });
-  }
-
-  // get volunteer by id 
-
-  static async getVolunteerById(volunteerId: number) {
-    return httpClient.get(`/volunteers/${volunteerId}`)
-      .then((response) => {
-        // Assuming the response contains a volunteer object with a name property
-        return response.data; // Or return new Volunteer(response.data); if you have a Volunteer model
       })
       .catch(async (error) => {
         throw Error(await this.errorMessage(error));
