@@ -75,6 +75,12 @@ export default class ParticipationDialog extends Vue {
   }
 
   isNumberValid(value: any) {
+    value = value?.trim();
+
+    if (value === undefined ) return true;
+
+    if (value === null || value === '') return true;
+
     if (!/^\d+$/.test(value)) return false;
     const parsedValue = parseInt(value);
     return parsedValue >= 1 && parsedValue <= 5;
@@ -97,14 +103,14 @@ export default class ParticipationDialog extends Vue {
       try {
         const result =
             this.editParticipation !== null
-                ? await RemoteServices.makeParticipation(
+                ? await RemoteServices.createParticipation(
                     this.editParticipation.volunteerId,
                     this.editParticipation.activityId,
-                )
-                : await RemoteServices.updateEnrollment(
-                    this.enrollment.id,
-                    { participating: true }
                 );
+                // : await RemoteServices.updateEnrollment(
+                //     this.enrollment.id,
+                //     { participating: true }
+                // );
         this.$emit('make-participation', result);
       } catch (error) {
         await this.$store.dispatch('error', error);
