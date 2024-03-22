@@ -12,9 +12,9 @@
                   label="Rating"
                   :rules="[
                   (v) =>
-                    isNumberValid(v) ||
-                    'Rating between 1 and 5',
-                ]"
+                    (!v || v === '' || isNumberValid(v)) ||
+                    'Leave blank or add a rating between 1 and 5',
+                  ]"
                   v-model="editParticipation.rating"
                   data-cy="participantionRating"
               ></v-text-field>
@@ -94,23 +94,26 @@ export default class ParticipationDialog extends Vue {
   }
 
   // [BS] when press makeparticipation:
-  // [BS] add a participation (participating) to activity (change # of participants)
-  // [BS] update volunteer enrollment (participating) from false to true
-  // updating list of enrollments
-
   async makeParticipation() {
     if ((this.$refs.form as Vue & { validate: () => boolean }).validate()) {
       try {
-        const result =
-            this.editParticipation !== null
-                ? await RemoteServices.createParticipation(
-                    this.editParticipation.volunteerId,
-                    this.editParticipation.activityId,
-                );
-                // : await RemoteServices.updateEnrollment(
-                //     this.enrollment.id,
-                //     { participating: true }
-                // );
+
+        let result = null;
+
+        // [BS] add a participation (participating) to activity (change # of participants)
+        if (this.editParticipation && this.editParticipation.volunteerId && this.editParticipation.activityId) {
+          result = await RemoteServices.makeParticipation(
+              this.editParticipation.volunteerId,
+              this.editParticipation.activityId,
+          );
+        }
+        // [BS] update volunteer enrollment (participating) from false to true
+        if (this.enrollment && this.enrollment.id) {
+          await RemoteServices.updateEnrollment(
+              this.enrollment.id
+          );
+        }
+
         this.$emit('make-participation', result);
       } catch (error) {
         await this.$store.dispatch('error', error);
