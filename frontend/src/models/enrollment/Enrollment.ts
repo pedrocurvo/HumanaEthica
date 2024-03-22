@@ -1,6 +1,5 @@
 import { ISOtoString } from '@/services/ConvertDateService';
 import Participation from '@/models/participation/Participation';
-import Volunteer from '@/models/volunteer/Volunteer';
 
 export default class Enrollment {
   id: number | null = null;
@@ -9,7 +8,7 @@ export default class Enrollment {
   volunteerId!: number;
   volunteerName: string | null = null;
   participating: boolean = false;
-  //participations!: Participation[];
+  participations!: Participation[];
 
   constructor(jsonObj?: Enrollment) {
     if (jsonObj) {
@@ -19,9 +18,9 @@ export default class Enrollment {
       this.volunteerId = jsonObj.volunteerId;
       this.volunteerName = jsonObj.volunteerName;
       this.participating = jsonObj.participating;
-      //this.participations = jsonObj.participations.map((participations: Participation) => {
-        //return new Participation(participations);
+      this.participations = jsonObj.participations.map((participations: Participation) => {
+        return new Participation(participations);
+      });
     }
-
   }
 }
