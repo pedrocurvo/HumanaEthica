@@ -93,33 +93,28 @@ export default class ParticipationDialog extends Vue {
     );
   }
 
-  // [BS] when press makeparticipation:
+
   async makeParticipation() {
-    if ((this.$refs.form as Vue & { validate: () => boolean }).validate()) {
+    if ((this.$refs.form as Vue & { validate: () => boolean }).validate()) { 
       try {
-
         let result = null;
-
-        // [BS] add a participation (participating) to activity (change # of participants)
         if (this.editParticipation && this.editParticipation.volunteerId && this.editParticipation.activityId) {
-          result = await RemoteServices.makeParticipation(
+          result = await RemoteServices.createParticipation(
               this.editParticipation.volunteerId,
               this.editParticipation.activityId,
+              this.editParticipation
           );
         }
-        // [BS] update volunteer enrollment (participating) from false to true
-        if (this.enrollment && this.enrollment.id) {
-          await RemoteServices.updateEnrollment(
-              this.enrollment.id
-          );
-        }
-
         this.$emit('make-participation', result);
+        this.$emit('update:dialog', false);
+        this.$emit('update-enrollments', result);
       } catch (error) {
         await this.$store.dispatch('error', error);
       }
     }
-  }
+  this.dialog = false;
+}
+
 
 
 }
