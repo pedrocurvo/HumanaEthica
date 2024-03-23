@@ -33,12 +33,11 @@
         <template v-slot:activator="{ on }">
           <v-icon
             v-if="!item.participating && !activityLimitReached()"
-            v-on="on"
             class="mr-2 action-button"
-            data-cy="selectParticipant"
             @click="selectParticipant(item)"
-          >
-            mdi-check
+            v-on="on"
+            data-cy="selectParticipant"
+            >mdi-check
           </v-icon>
         </template>
         <span>Select Participant</span>
