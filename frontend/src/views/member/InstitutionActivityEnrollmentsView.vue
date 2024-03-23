@@ -46,10 +46,11 @@
     </template>
   </v-data-table>
     <participation-dialog
-        v-if="participations && editParticipationSelectionDialog"
+        v-if="currentParticipation && editParticipationSelectionDialog"
         v-model="editParticipationSelectionDialog"
-        :participations="participations"
-        v-on:make-participation="makeParticipation"
+        :participation="currentParticipation"
+        v-on:make-participation="OnMakeParticipation"
+        v-on:update-enrollments="updateEnrollments"
         v-on:close-participation-dialog="onCloseParticipationDialog"
     />
   </v-card>
@@ -66,7 +67,6 @@ import ParticipationSelectionDialog from '@/views/member/ParticipationSelectionD
 import Participation from '@/models/participation/Participation';
 import Institution from '@/models/institution/Institution';
 
-//o dialog tem participation e enrollment
 @Component({
   components: {
     'activity-dialog': ActivityDialog,
@@ -81,6 +81,7 @@ export default class InstitutionActivityEnrollmentsView extends Vue {
 
   // [BS] not sure
   editParticipationSelectionDialog: boolean = false;
+  currentParticipation: Participation | null = null;
 
 
   headers: object = [
@@ -136,44 +137,12 @@ export default class InstitutionActivityEnrollmentsView extends Vue {
     }
   }
 
-//   async created() {
-//   this.activity = this.$store.getters.getActivity;
-//   if (this.activity && this.activity.id) {
-//     await this.$store.dispatch('loading');
-//     try {
-//       let enrollments = await RemoteServices.getActivityEnrollments(this.activity.id);
-//       // Fetch volunteer names for each enrollment
-//       this.enrollments = await Promise.all(enrollments.map(async (enrollment: Enrollment) => {
-//       try {
-//         const volunteer = await RemoteServices.getVolunteerById(enrollment.volunteerId);
-//         return { ...enrollment, volunteerName: volunteer.name };
-//         } catch (error) {
-//           console.error("Failed to fetch volunteer name", error);
-//           return { ...enrollment, volunteerName: "Unknown" }; // Handle error case
-//         }
-//       }));
-//     } catch (error) {
-//       console.error('Failed to fetch enrollments', error);
-//       this.$store.dispatch('error', error);
-//     }
-//     this.$store.dispatch('clearLoading');
-//   }
-// }
-
-// getName() { console.log("1234567"); return "nome";}
-
-  // async fetchVolunteerName(volunteerId: number){
-  //   const volunteer = await RemoteServices.getVolunteerById(volunteerId);
-  //   console.log(volunteer.name);
-  //   return volunteer.name;
-  // }
-
   async getActivities() {
     await this.$store.dispatch('setActivity', null);
     this.$router.push({ name: 'institution-activities' }).catch(() => {});
   }
 
-  //[BS]
+  // [BS]
   selectParticipant(participation: Participation) {
     this.currentParticipation = participation;
     this.editParticipationSelectionDialog = true;
@@ -184,15 +153,23 @@ export default class InstitutionActivityEnrollmentsView extends Vue {
     this.editParticipationSelectionDialog = false;
   }
 
-  async makeParticipation(participation: Participation) {
-    this.enrollment.participations = this.enrollment.participations.filter(
-        p => p.id !== participation.id
-    );
+  async onMakeParticipation(participation: Participation) {
     this.participations.unshift(participation);
     this.editParticipationSelectionDialog = false;
     this.currentParticipation = null;
+    this.activity.numberOfParticipations++;
   }
 
+  updateEnrollments(participation: Participation) {
+    this.enrollments = this.enrollments.map((enrollment) => {
+      if (enrollment.activityId === participation.activityId && enrollment.volunteerId === participation.volunteerId) {
+        enrollment.participating = true;
+      }
+      return enrollment;
+    });
+  }
+
+  //invariant to show (or not) button to select participant
   activityLimitReached() {
     return this.activity.participantsNumberLimit == this.participations.length;
   }
