@@ -37,6 +37,10 @@ Cypress.Commands.add('deleteAllButArs', () => {
     query: "DELETE FROM INSTITUTIONS",
     credentials: credentials,
   });
+  cy.task('queryDatabase', {
+    query: "DELETE FROM ENROLLMENT WHERE NOT (name = 'ars')",
+    credentials: credentials,
+  });
 });
 
 Cypress.Commands.add('createDemoEntities', () => {
