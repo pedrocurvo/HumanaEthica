@@ -499,19 +499,19 @@ export default class RemoteServices {
       });
   }
 
-  static async createParticipation(
-    userId: number,
-    activityId: number,
-  ): Promise<Participation> {
-    return httpClient
-      .post(`/activities/${activityId}/registerParticipation`)
-      .then((response) => {
-        return new Participation(response.data);
+
+  static async createParticipation(userId: number, activityId: number, participation: Participation) {
+    const url = `/activities/${activityId}/participations`;
+    return httpClient.post(url, participation)
+      .then(response => {
+        return response.data;
       })
-      .catch(async (error) => {
-        throw Error(await this.errorMessage(error));
+      .catch(error => {
+        throw new Error(error);
       });
   }
+
+
   
 
   // Assessment Controller
@@ -604,31 +604,6 @@ export default class RemoteServices {
       });
   }
 
-  // [BS] work in progress (?) add a participation+volunteer to an activity
-
-  static async makeParticipation(volunteerId: number | null, activityId: number | null) {
-    return httpClient
-        .post('/participations', { volunteerId, activityId })
-        .then((response) => {
-          return new Participation(response.data);
-        })
-        .catch(async (error) => {
-          throw Error(await this.errorMessage(error));
-        });
-  }
-
-  // [BS] work in progress (?) make volunteer enrollment (participating) from false to true
-  // updating list of enrollments
-  static async updateEnrollment(enrollmentId: number | null) {
-    return httpClient
-        .put(`/enrollments/${enrollmentId}/participating`, { participating: true })
-        .then((response) => {
-          return response.data; // check if backend returns the updated list of enrollments
-        })
-        .catch(async (error) => {
-          throw Error(await this.errorMessage(error));
-        });
-  }
 
   // Error
 
