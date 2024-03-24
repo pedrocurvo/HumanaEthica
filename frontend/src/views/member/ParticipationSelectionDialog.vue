@@ -108,6 +108,7 @@ export default class ParticipationDialog extends Vue {
         this.$emit('make-participation', result);
         this.$emit('update:dialog', false);
         this.$emit('update-enrollments', result);
+        this.$emit('close-participation-dialog');
       } catch (error) {
         await this.$store.dispatch('error', error);
       }
