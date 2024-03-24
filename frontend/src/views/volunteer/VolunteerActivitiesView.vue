@@ -247,6 +247,7 @@ export default class VolunteerActivitiesView extends Vue {
     this.editEnrollmentDialog = false;
     this.currentActivity = null;
     this.currentEnrollment = null;
+    window.location.reload();
   }
 
 }
