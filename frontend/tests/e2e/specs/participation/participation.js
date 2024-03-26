@@ -9,7 +9,7 @@ describe('Participation', () => {
     cy.deleteAllButArs();
   });
 
-  it('verifies activities and enrollments as a member', () => {
+  let test = it('verifies activities and enrollments as a member', () => {
     // (Apenas) Membro faz login e vai à activities page
     cy.demoMemberLogin();
 
@@ -79,7 +79,8 @@ describe('Participation', () => {
         .should('contain', '2');
 
     // Logout after the test
-    cy.logout();describe('Participation', () => {
+    cy.logout();
+    describe('Participation', () => {
       beforeEach(() => {
         cy.deleteAllButArs();
         cy.createDemoEntities();
@@ -88,5 +89,6 @@ describe('Participation', () => {
       afterEach(() => {
         cy.deleteAllButArs();
       });
+    });
   });
 });
