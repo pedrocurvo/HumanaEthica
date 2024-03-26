@@ -48,7 +48,7 @@
         v-if="currentParticipation && editParticipationSelectionDialog"
         v-model="editParticipationSelectionDialog"
         :participation="currentParticipation"
-        v-on:make-participation="OnMakeParticipation"
+        v-on:make-participation="onMakeParticipation"
         v-on:update-enrollments="updateEnrollments"
         v-on:close-participation-dialog="onCloseParticipationDialog"
     />
@@ -78,7 +78,6 @@ export default class InstitutionActivityEnrollmentsView extends Vue {
   participations: Participation[] = [];
   search: string = '';
 
-  // [BS] not sure
   editParticipationSelectionDialog: boolean = false;
   currentParticipation: Participation | null = null;
 
@@ -141,7 +140,6 @@ export default class InstitutionActivityEnrollmentsView extends Vue {
     this.$router.push({ name: 'institution-activities' }).catch(() => {});
   }
 
-  // [BS]
   selectParticipant(participation: Participation) {
     this.currentParticipation = participation;
     this.editParticipationSelectionDialog = true;
