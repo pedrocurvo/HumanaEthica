@@ -65,7 +65,7 @@ Cypress.Commands.add('createDemoEntities', () => {
   })
 });
 
-Cypress.Commands.add('createDemoEntitiesForEnrollment', () => {
+Cypress.Commands.add('createDemoEntitiesForParticipation', () => {
   // Institution
   cy.task('queryDatabase',  {
     query: "INSERT INTO " + INSTITUTION_COLUMNS + "VALUES ('1', 't', 'abca428c09862e89', '2024-02-06 17:58:21.402146', 'demo_institution@mail.com',	'DEMO INSTITUTION',	'000000000',	'2024-02-06 17:58:21.402134')",
