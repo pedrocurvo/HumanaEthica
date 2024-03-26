@@ -66,7 +66,7 @@ describe('Enrollment', () => {
         cy.get('[data-cy="memberActivitiesTable"] tbody tr')
         .eq(0).children().eq(3).should('contain', 1);
         // Check motivation
-        cy.get('[data-cy="showEnrollments"]').click();
+        cy.get('[data-cy="showEnrollments"]').first().click();
         cy.get('[data-cy="activityEnrollmentsTable"] tbody tr').
         should('have.length', 1);
         cy.get('[data-cy="activityEnrollmentsTable"] tbody tr')
