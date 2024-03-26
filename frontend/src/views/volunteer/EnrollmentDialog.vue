@@ -89,7 +89,7 @@ export default class EnrollmentDialog extends Vue {
   }
 
   isValidMotivation(motivation: any) {
-    return motivation && motivation.length >= 10;
+    return motivation && motivation.trim().length >= 10;
   }
 
 
