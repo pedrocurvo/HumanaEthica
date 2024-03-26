@@ -42,8 +42,7 @@ describe('Enrollment', () => {
         cy.get('[data-cy="volunteerActivities"]').click();
         // check request was done
         cy.wait('@getActivities');
-        cy.get('[data-cy="volunteerActivitiesTable"] tbody tr')
-        .eq(0).children().eq(9).get('[data-cy="applyButton"]').click();
+        cy.get('[data-cy="applyButton"]').first().click();
         cy.get('[data-cy="motivationInput"]').type('Motivation Long Enough');
         cy.get('[data-cy="saveEnrollment"]').click();
         // check request was done
