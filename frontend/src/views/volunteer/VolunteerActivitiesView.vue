@@ -184,29 +184,7 @@ export default class VolunteerActivitiesView extends Vue {
     }
   }
 
-  async applyForActivity(activity: Activity) {
-  // if (activity.id !== null) {
-  //   try {
-  //     const result = await RemoteServices.applyForActivity(
-  //       this.$store.getters.getUser.id,
-  //       activity.id,
-  //     );
-  //     this.activities = this.activities.filter((a) => a.id !== activity.id);
-  //     this.activities.unshift(result);
-
-  //   } catch (error) {
-  //     await this.$store.dispatch('error', error);
-  //   }
-  // }
-  }
-
-    // async hasAlreadyApplied(activity: Activity) {
-    //   console.log('hasAlreadyappplied')
-    //     return this.enrollments.some(enrollment => 
-    //       enrollment.activityId == activity.id);
-    //   }
-
-    verifyInvariants(activity: Activity) {
+  verifyInvariants(activity: Activity) {
       console.log('verifyInvariants')
       const now = new Date();
       const applicationDeadline = new Date(activity.applicationDeadline);
@@ -236,14 +214,6 @@ export default class VolunteerActivitiesView extends Vue {
   }
 
   async onSaveEnrollment(enrollment: Enrollment) {
-    // if (this.currentActivity?.enrollments) {
-    //   // Check if the enrollment ID is not already present in the currentActivity's enrollments
-    //   if (!this.currentActivity.enrollments.some(e => e.id === enrollment.id)) {
-    //     // Add the enrollment to the activity enrollments
-    //     this.currentActivity.enrollments.push(enrollment);
-    //   }
-    // }
-
     this.editEnrollmentDialog = false;
     this.currentActivity = null;
     this.currentEnrollment = null;
