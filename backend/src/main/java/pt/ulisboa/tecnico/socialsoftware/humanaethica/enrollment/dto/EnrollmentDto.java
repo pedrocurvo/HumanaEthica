@@ -28,7 +28,6 @@ public class EnrollmentDto {
         this.activityId = enrollment.getActivity().getId();
         this.volunteerName = enrollment.getVolunteer().getName();
         this.participating = enrollment.isParticipating();
-        System.out.println("this.participating: " + this.participating);
     }
 
     public Integer getId() {
