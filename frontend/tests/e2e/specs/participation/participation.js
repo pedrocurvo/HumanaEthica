@@ -8,7 +8,7 @@ describe('Participation', () => {
     cy.deleteAllButArs();
   });
 
-  it('verifies activities and enrollments as a member', () => {
+  let test = it('verifies activities and enrollments as a member', () => {
     // (Apenas) Membro faz login e vai à activities page
     cy.demoMemberLogin();
 
