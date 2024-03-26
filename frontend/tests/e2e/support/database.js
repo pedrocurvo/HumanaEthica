@@ -105,11 +105,11 @@ Cypress.Commands.add('createDemoEntitiesForEnrollment', () => {
     credentials: credentials,
   })
 
-  // Enrollment
-  cy.task('queryDatabase',  {
-    query: "INSERT INTO " + ENROLLMENT_COLUMNS + "VALUES ('5','2024-02-06 18:51:37.595713',	'sql-inserted-motivation', '2',	'3')",
-    credentials: credentials,
-  })
+  // // Enrollment
+  // cy.task('queryDatabase',  {
+  //   query: "INSERT INTO " + ENROLLMENT_COLUMNS + "VALUES ('5','2024-02-06 18:51:37.595713',	'sql-inserted-motivation', '2',	'3')",
+  //   credentials: credentials,
+  // })
 
 });
 
