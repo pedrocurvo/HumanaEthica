@@ -100,7 +100,15 @@ Cypress.Commands.add('createDemoEntitiesForEnrollment', () => {
   // Activity
   cy.task('queryDatabase',  {
     query: "INSERT INTO " + ACTIVITY_COLUMNS + "VALUES ('1', '2024-08-06 17:58:21.402146',	'2024-08-06 17:58:21.402146',	'Enrollment is open',	'2024-08-08 17:58:21.402146',	'A1',	'1',	'Lisbon',	'2024-08-07 17:58:21.402146',	'APPROVED',	'1')",
+    credentials: credentials,
+  })
+
+  cy.task('queryDatabase',  {
     query: "INSERT INTO " + ACTIVITY_COLUMNS + "VALUES ('2',	'2024-08-06 17:58:21.402146',	'2024-08-06 17:58:21.402146',	'Enrollment is open and it is already enrolled',	'2024-08-08 17:58:21.402146',	'A2',	'2', 'Lisbon',	'2024-08-07 17:58:21.402146',	'APPROVED',	'1')",
+    credentials: credentials,
+  })
+
+  cy.task('queryDatabase',  {
     query: "INSERT INTO " + ACTIVITY_COLUMNS + "VALUES ('3',	'2024-02-06 17:58:21.402146',	'2024-08-06 17:58:21.402146',	'Enrollment is closed',	'2024-08-08 17:58:21.402146',	'A3',	'3',	'Lisbon',	'2024-08-07 17:58:21.402146',	'APPROVED',	'1')",
     credentials: credentials,
   })
