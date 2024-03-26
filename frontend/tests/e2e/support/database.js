@@ -75,16 +75,24 @@ Cypress.Commands.add('createDemoEntitiesForEnrollment', () => {
     credentials: credentials,
   })
 
-  // User
+  // Member
   cy.task('queryDatabase',  {
     query: "INSERT INTO " + USER_COLUMNS + "VALUES ('MEMBER',	'2', '2024-02-06 17:58:21.419878',	'DEMO-MEMBER',	'MEMBER',	'ACTIVE',	'1')",
-    query: "INSERT INTO " + USER_COLUMNS + "VALUES ('VOLUNTEER',	'3', '2024-02-06 17:58:21.419878',	'DEMO-VOLUNTEER',	'VOLUNTEER',	'ACTIVE',	'NULL')",
     credentials: credentials,
   })
 
-  // Auth User
   cy.task('queryDatabase',  {
     query: "INSERT INTO " + AUTH_USERS_COLUMNS + "VALUES ('DEMO',	'2', 't',	'demo_member@mail.com',	'demo-member','2')",
+    credentials: credentials,
+  })
+
+  // Volunteer
+  cy.task('queryDatabase',  {
+    query: "INSERT INTO " + USER_COLUMNS + "VALUES ('VOLUNTEER',	'3', '2024-02-06 17:58:21.419878',	'DEMO-VOLUNTEER',	'VOLUNTEER',	'ACTIVE',	NULL)",
+    credentials: credentials,
+  })
+
+  cy.task('queryDatabase',  {
     query: "INSERT INTO " + AUTH_USERS_COLUMNS + "VALUES ('DEMO', '3',	't', 'demo_volunteer@mail.com',	'demo-volunteer', '3')",
     credentials: credentials,
   })
