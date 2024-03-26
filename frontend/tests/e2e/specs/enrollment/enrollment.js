@@ -1,7 +1,7 @@
 describe('Enrollment', () => {
     beforeEach(() => {
       cy.deleteAllButArs();
-      cy.createDemoEntities();
+      //cy.createDemoEntities();
       cy.createDemoEntitiesForEnrollment();
     });
   
