@@ -10,7 +10,9 @@ const INSTITUTION_COLUMNS = "institutions (id, active, confirmation_token, creat
 const USER_COLUMNS = "users (user_type, id, creation_date, name, role, state, institution_id)";
 const AUTH_USERS_COLUMNS = "auth_users (auth_type, id, active, email, last_access, password, username, confirmation_token, token_generation_date, user_id)";
 const ACTIVITY_COLUMNS = "activities (id, application_deadline, creation_date, description, ending_date, name, participants_number_limit, region, starting_date, state, institution_id)";
+// confirmar se colocamos 'numberOfParticipations,'
 const ENROLLMENT_COLUMNS = "enrollments (id, enrollment_date_time, motivation, activity_id, volunteer_id)";
+// confirmar se colocamos 'participating,'
 const PARTICIPATION_COLUMNS = "participations (id, acceptance_date, rating, activity_id, volunteer_id)";
 
 const now = new Date();
@@ -76,27 +78,52 @@ Cypress.Commands.add('createDemoEntitiesForParticipation', () => {
   // User
   cy.task('queryDatabase',  {
     query: "INSERT INTO " + USER_COLUMNS + "VALUES ('MEMBER',	'2', '2024-02-06 17:58:21.419878',	'DEMO-MEMBER',	'MEMBER',	'ACTIVE',	'1')",
-    query: "INSERT INTO " + USER_COLUMNS + "VALUES ('VOLUNTEER',	'3', '2024-02-06 17:58:23.732513',	'DEMO-VOLUNTEER',	'VOLUNTEER',	'ACTIVE',	\N)",
-    query: "INSERT INTO " + USER_COLUMNS + "VALUES ('VOLUNTEER',	'4', '2024-02-06 17:58:23.732513',	'DEMO-VOLUNTEER2',	'VOLUNTEER',	'ACTIVE',	\N)",
-    query: "INSERT INTO " + USER_COLUMNS + "VALUES ('VOLUNTEER',	'5', '2024-02-06 17:58:23.732513',	'DEMO-VOLUNTEER3',	'VOLUNTEER',	'ACTIVE',	\N)",
+    credentials: credentials,
+  })
 
+  cy.task('queryDatabase',  {
+  query: "INSERT INTO " + USER_COLUMNS + "VALUES ('VOLUNTEER',	'3', '2024-02-06 17:58:23.732513',	'DEMO-VOLUNTEER',	'VOLUNTEER',	'ACTIVE',	\N)",
+    credentials: credentials,
+  })
+
+  cy.task('queryDatabase',  {
+    query: "INSERT INTO " + USER_COLUMNS + "VALUES ('VOLUNTEER',	'4', '2024-02-06 17:58:23.732513',	'DEMO-VOLUNTEER2',	'VOLUNTEER',	'ACTIVE',	\N)",
+    credentials: credentials,
+  })
+
+  cy.task('queryDatabase',  {
+    query: "INSERT INTO " + USER_COLUMNS + "VALUES ('VOLUNTEER',	'5', '2024-02-06 17:58:23.732513',	'DEMO-VOLUNTEER3',	'VOLUNTEER',	'ACTIVE',	\N)",
     credentials: credentials,
   })
 
   // Auth User
   cy.task('queryDatabase',  {
     query: "INSERT INTO " + AUTH_USERS_COLUMNS + "VALUES ('DEMO',	'2', 't',	'demo_member@mail.com',	\N,	\N,	'demo-member', \N, \N,'2')",
+    credentials: credentials,
+  })
+
+  cy.task('queryDatabase',  {
     query: "INSERT INTO " + AUTH_USERS_COLUMNS + "VALUES ('DEMO', '3',	't', 'demo_volunteer@mail.com',	\N,	\N,	'demo-volunteer', \N, \N, '3')",
+    credentials: credentials,
+  })
+
+  cy.task('queryDatabase',  {
     query: "INSERT INTO " + AUTH_USERS_COLUMNS + "VALUES ('DEMO',	'4', 't',	'demo_volunteer@mail.com',	\N,	\N,	'demo-volunteer-2', \N, \N,'4')",
+    credentials: credentials,
+  })
+
+  cy.task('queryDatabase',  {
     query: "INSERT INTO " + AUTH_USERS_COLUMNS + "VALUES ('DEMO', '5',	't', 'demo_volunteer@mail.com',	\N,	\N,	'demo-volunteer-3', \N, \N, '5')",
-
-
     credentials: credentials,
   })
 
   // Activity
   cy.task('queryDatabase',  {
     query: "INSERT INTO " + ACTIVITY_COLUMNS + "VALUES ('1', '2024-08-06 17:58:21.402146',	'2024-08-06 17:58:21.402146',	'Has vacancies',	'2024-08-08 17:58:21.402146',	'A1',	'2',	'Lisbon',	'2024-08-07 17:58:21.402146',	'APPROVED',	'1')",
+    credentials: credentials,
+  })
+
+  cy.task('queryDatabase',  {
     query: "INSERT INTO " + ACTIVITY_COLUMNS + "VALUES ('2',	'2024-08-06 17:58:21.402146',	'2024-08-06 17:58:21.402146',	'Has no vacancies',	'2024-02-08 17:58:21.402146',	'A2',	'1', 'Lisbon',	'2024-08-07 17:58:21.402146',	'APPROVED',	'1')",
     credentials: credentials,
   })
@@ -104,8 +131,20 @@ Cypress.Commands.add('createDemoEntitiesForParticipation', () => {
   // Enrollment
   cy.task('queryDatabase',  {
     query: "INSERT INTO " + ENROLLMENT_COLUMNS + "VALUES ('1','2024-02-06 18:51:37.595713',	'Has vacancies and do not participate', '1',	'3')",
+    credentials: credentials,
+  })
+
+  cy.task('queryDatabase',  {
     query: "INSERT INTO " + ENROLLMENT_COLUMNS + "VALUES ('2','2024-02-06 18:51:37.595713',	'Has vacancies and participate', '1',	'4')",
+    credentials: credentials,
+  })
+
+  cy.task('queryDatabase',  {
     query: "INSERT INTO " + ENROLLMENT_COLUMNS + "VALUES ('3','2024-02-06 18:51:37.595713',	'Has no vacancies and participate', '2',	'3')",
+    credentials: credentials,
+  })
+
+  cy.task('queryDatabase',  {
     query: "INSERT INTO " + ENROLLMENT_COLUMNS + "VALUES ('4','2024-02-06 18:51:37.595713',	'Has no vacancies and do not participate', '2',	'5')",
     credentials: credentials,
   })
@@ -113,6 +152,10 @@ Cypress.Commands.add('createDemoEntitiesForParticipation', () => {
   // Participation
   cy.task('queryDatabase',  {
     query: "INSERT INTO " + PARTICIPATION_COLUMNS + "VALUES ('5','2024-02-06 18:51:37.595713', '5', '1',  '4')",
+    credentials: credentials,
+  })
+
+  cy.task('queryDatabase',  {
     query: "INSERT INTO " + PARTICIPATION_COLUMNS + "VALUES ('6','2024-02-06 18:51:37.595713', '5', '2',  '3')",
     credentials: credentials,
   })

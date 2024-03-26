@@ -7,6 +7,7 @@ export default class Activity {
   id: number | null = null;
   name!: string;
   region!: string;
+  numberOfParticipations!: number;
   participantsNumberLimit!: number;
   themes: Theme[] = [];
   institution!: Institution;
@@ -19,7 +20,6 @@ export default class Activity {
   formattedEndingDate!: string;
   applicationDeadline!: string;
   formattedApplicationDeadline!: string;
-  numberOfParticipations!: number;
 
   constructor(jsonObj?: Activity) {
     if (jsonObj) {
