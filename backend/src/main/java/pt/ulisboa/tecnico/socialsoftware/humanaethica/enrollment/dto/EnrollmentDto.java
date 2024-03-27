@@ -73,14 +73,6 @@ public class EnrollmentDto {
         this.enrollmentDateTime = enrollmentDateTime;
     }
 
-    public Integer getVolunteerId() {
-        return volunteerId;
-    }
-
-    public void setVolunteer(Integer volunteerId) {
-        this.volunteerId = volunteerId;
-    }
-
     public String getVolunteerName() {
         return volunteerName;
     }
@@ -99,10 +91,6 @@ public class EnrollmentDto {
 
     public Integer getActivityId() {
         return activityId;
-    }
-
-    public void setActivityId(Integer activityId) {
-        this.activityId = activityId;
     }
 
 }
