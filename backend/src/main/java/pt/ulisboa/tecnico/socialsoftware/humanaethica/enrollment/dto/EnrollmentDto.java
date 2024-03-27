@@ -89,8 +89,4 @@ public class EnrollmentDto {
         this.participating = participating;
     }
 
-    public Integer getActivityId() {
-        return activityId;
-    }
-
 }
