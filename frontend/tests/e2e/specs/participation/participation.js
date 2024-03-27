@@ -34,11 +34,17 @@ describe('Participation', () => {
     // intercept get enrollments request
     cy.intercept('GET', '/activities/*/enrollments').as('getEnrollments');
 
+    // intercept get participation request
+    cy.intercept('GET', '/activities/*/participations').as('getParticipations');
+
     // Selecionar Show Enrollments (botao UI Show Applications) da primeira atividade da tabela
     cy.get('[data-cy="showEnrollments"]').first().click();
 
     // check request was done
     cy.wait('@getEnrollments');
+
+    // check request was done
+    cy.wait('@getParticipations');
 
     // Verificar que a tabela dos enrollments da atividade tem 2 instâncias
     cy.get('[data-cy="activityEnrollmentsTable"] tbody tr')
@@ -55,8 +61,14 @@ describe('Participation', () => {
     // Verificar que o dialog de participação foi aberto e, se sim, ao abrir o dialog atribuir rating de 3 à participação
     cy.get('[data-cy="participantionRating"]').should('be.visible').type('3');
 
+    // intercept create participation request
+    cy.intercept('POST', '/activities/*/participations').as('createParticipation');
+
     // click no botão de confirmação
     cy.get('[data-cy="makeParticipation"]').click();
+
+    // check request was done
+    cy.wait('@createParticipation');
 
     // Verificar que o primeiro enrollment que passou a ter participação tem a coluna Participating como true
     cy.get('[data-cy="activityEnrollmentsTable"] tbody tr').eq(0).children()
