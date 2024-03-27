@@ -5,10 +5,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import pt.ulisboa.tecnico.socialsoftware.humanaethica.activity.domain.Activity;
+import pt.ulisboa.tecnico.socialsoftware.humanaethica.activity.dto.ActivityDto;
 import pt.ulisboa.tecnico.socialsoftware.humanaethica.activity.repository.ActivityRepository;
 import pt.ulisboa.tecnico.socialsoftware.humanaethica.enrollment.domain.Enrollment;
 import pt.ulisboa.tecnico.socialsoftware.humanaethica.enrollment.dto.EnrollmentDto;
 import pt.ulisboa.tecnico.socialsoftware.humanaethica.exceptions.HEException;
+import pt.ulisboa.tecnico.socialsoftware.humanaethica.theme.domain.Theme;
 import pt.ulisboa.tecnico.socialsoftware.humanaethica.user.domain.Volunteer;
 import pt.ulisboa.tecnico.socialsoftware.humanaethica.user.repository.UserRepository;
 
@@ -62,4 +64,16 @@ public class EnrollmentService {
 
         return new EnrollmentDto(enrollment);
     }
+
+    // @Transactional(isolation = Isolation.READ_COMMITTED)
+    // public EnrollmentDto acceptEnrollment(Integer enrollmentId, EnrollmentDto enrollmentDto) {
+    //     if (enrollmentId == null || enrollmentDto == null) throw new HEException(ENROLLMENT_NOT_FOUND);
+    //     Enrollment enrollment = enrollmentRepository.findById(enrollmentId).orElseThrow(() -> new HEException(ENROLLMENT_NOT_FOUND, enrollmentId));
+
+    //     enrollment.setParticipating(enrollmentDto);
+    //     enrollmentRepository.save(enrollment);
+
+    //     return new EnrollmentDto(enrollment);
+
+    // }
 }

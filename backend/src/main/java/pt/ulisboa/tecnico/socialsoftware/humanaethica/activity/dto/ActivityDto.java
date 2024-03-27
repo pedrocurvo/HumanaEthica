@@ -2,6 +2,7 @@ package pt.ulisboa.tecnico.socialsoftware.humanaethica.activity.dto;
 
 import pt.ulisboa.tecnico.socialsoftware.humanaethica.activity.domain.Activity;
 import pt.ulisboa.tecnico.socialsoftware.humanaethica.institution.dto.InstitutionDto;
+import pt.ulisboa.tecnico.socialsoftware.humanaethica.participation.dto.ParticipationDto;
 import pt.ulisboa.tecnico.socialsoftware.humanaethica.theme.dto.ThemeDto;
 import pt.ulisboa.tecnico.socialsoftware.humanaethica.utils.DateHandler;
 
@@ -21,6 +22,9 @@ public class ActivityDto {
     private List<ThemeDto> themes;
     private InstitutionDto institution;
     private Integer numberOfEnrollments;
+    private List<ParticipationDto> participations;
+    private Integer numberOfParticipations;
+
 
     public ActivityDto(){
     }
@@ -29,11 +33,16 @@ public class ActivityDto {
         setId(activity.getId());
         setName(activity.getName());
         setRegion(activity.getRegion());
+        setNumberOfParticipations(activity.getParticipations().size());
         setParticipantsNumberLimit(activity.getParticipantsNumberLimit());
         setDescription(activity.getDescription());
 
         this.themes = activity.getThemes().stream()
                 .map(theme->new ThemeDto(theme,false, true, false))
+                .toList();
+
+        this.participations = activity.getParticipations().stream()
+                .map(participation->new ParticipationDto(participation))
                 .toList();
 
         setState(activity.getState().name());
@@ -47,6 +56,8 @@ public class ActivityDto {
                 setInstitution(new InstitutionDto(activity.getInstitution(), false, false));
 
         }
+
+        
     }
 
     public void setThemes(List<ThemeDto> themes) {
@@ -134,6 +145,13 @@ public class ActivityDto {
         this.institution = institution;
     }
 
+    public Integer getNumberOfParticipations() {
+       return numberOfParticipations;
+    }
+
+    public void setNumberOfParticipations(Integer numberOfParticipations) {
+       this.numberOfParticipations = numberOfParticipations;
+    }
 
     public Integer getParticipantsNumberLimit() {
         return participantsNumberLimit;
@@ -151,12 +169,21 @@ public class ActivityDto {
         this.numberOfEnrollments = numberOfEnrollments;
     }
 
+    public List<ParticipationDto> getParticipations(){
+        return this.participations;
+    }
+
+    public void setParticipations(List<ParticipationDto> participations){
+        this.participations = participations;
+    }
+
     @Override
     public String toString() {
         return "ActivityDto{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", region='" + region + '\'' +
+                //", numberOfParticipations=" + numberOfParticipations +
                 ", participantsNumber=" + participantsNumberLimit +
                 ", description='" + description + '\'' +
                 ", startingDate='" + startingDate + '\'' +
@@ -165,6 +192,7 @@ public class ActivityDto {
                 ", state='" + state + '\'' +
                 ", creationDate='" + creationDate + '\'' +
                 ", themes=" + themes +
+                ", participations=" + participations +
                 ", institution=" + institution +
                 ", numberOfEnrollments=" + numberOfEnrollments +
                 '}';

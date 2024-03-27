@@ -1,11 +1,13 @@
 import { ISOtoString } from '@/services/ConvertDateService';
 import Theme from '@/models/theme/Theme';
 import Institution from '@/models/institution/Institution';
+import Participation from '@/models/participation/Participation';
 
 export default class Activity {
   id: number | null = null;
   name!: string;
   region!: string;
+  numberOfParticipations!: number;
   participantsNumberLimit!: number;
   themes: Theme[] = [];
   institution!: Institution;
@@ -25,6 +27,7 @@ export default class Activity {
       this.id = jsonObj.id;
       this.name = jsonObj.name;
       this.region = jsonObj.region;
+      this.numberOfParticipations = jsonObj.numberOfParticipations;
       this.participantsNumberLimit = jsonObj.participantsNumberLimit;
       this.numberOfEnrollments = jsonObj.numberOfEnrollments;
       this.themes = jsonObj.themes.map((themes: Theme) => {
@@ -45,6 +48,7 @@ export default class Activity {
         this.formattedApplicationDeadline = ISOtoString(
           jsonObj.applicationDeadline,
         );
+
     }
   }
 }

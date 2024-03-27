@@ -53,6 +53,7 @@ public enum ErrorMessage {
     ASSESSMENT_ONLY_IF_INSTITUTION_HAS_FINISHED_ACTIVITIES("Institution does not have any finished activity"),
     ASSESSMENT_REQUIRES_REVIEW("To do an assessment have to write a review longer than 10 characters"),
 
+    ENROLLMENT_NOT_FOUND("Enrollment not found with id %d"),
     ;
 
     public final String label;

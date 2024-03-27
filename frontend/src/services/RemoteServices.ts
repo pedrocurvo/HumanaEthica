@@ -12,6 +12,7 @@ import RegisterMember from '@/models/member/RegisterMember';
 import AuthPasswordDto from '@/models/user/AuthPasswordDto';
 import Theme from '@/models/theme/Theme';
 import Enrollment from '@/models/enrollment/Enrollment';
+import Participation from '@/models/participation/Participation';
 import Assessment from '@/models/assessment/Assessment';
 
 const httpClient = axios.create();
@@ -518,6 +519,36 @@ export default class RemoteServices {
       });
   }
 
+  // Participation controller
+
+  static async getActivityParticipations(activityId: number) {
+    return httpClient
+      .get(`/activities/${activityId}/participations`)
+      .then((response) => {
+        return response.data.map((participation: any) => {
+          return new Participation(participation);
+        });
+      })
+      .catch(async (error) => {
+        throw Error(await this.errorMessage(error));
+      });
+  }
+
+
+  static async createParticipation(userId: number, activityId: number, participation: Participation) {
+    const url = `/activities/${activityId}/participations`;
+    return httpClient.post(url, participation)
+      .then(response => {
+        return response.data;
+      })
+      .catch(error => {
+        throw new Error(error);
+      });
+  }
+
+
+  
+
   // Assessment Controller
 
   static async getInstitutionAssessments(
@@ -607,6 +638,7 @@ export default class RemoteServices {
         throw Error(await this.errorMessage(error));
       });
   }
+
 
   // Error
 
