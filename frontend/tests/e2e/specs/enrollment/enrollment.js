@@ -69,7 +69,7 @@ describe('Enrollment', () => {
         cy.get('[data-cy="activityEnrollmentsTable"] tbody tr').
         should('have.length', 1);
         cy.get('[data-cy="activityEnrollmentsTable"] tbody tr')
-        .eq(0).children().eq(0).should('contain', 'Motivation Long Enough');
+        .eq(0).children().eq(1).should('contain', 'Motivation Long Enough');
         cy.logout();
 
         
