@@ -13,7 +13,7 @@ describe('Enrollment', () => {
         // Enter in Member Demo
         cy.demoMemberLogin()
         // intercept create activity request and inject date values in the request body
-        cy.intercept('POST', '/enrollments', (req) => {
+        cy.intercept('POST', '/activities/1/enrollments', (req) => {
             req.body = {
             };
         }).as('register');
@@ -45,7 +45,7 @@ describe('Enrollment', () => {
         cy.get('[data-cy="motivationInput"]').type('Motivation Long Enough');
         cy.get('[data-cy="saveEnrollment"]').click();
         // check request was done
-        //cy.wait('@register')
+        cy.wait('@register')
         cy.logout();
 
         // Enter in Member Demo
