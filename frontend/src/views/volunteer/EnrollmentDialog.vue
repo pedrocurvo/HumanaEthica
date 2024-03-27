@@ -18,7 +18,7 @@
                   label="*Motivation"
                   :rules="[
                             (v) => !!v || 'Enrollment motivation is required',
-                            (v) => (v && v.replace(/\s+/g, '').trim().length >= 10) || 'Motivation must be at least 10 characters long'
+                            (v) => (v && v.trim().length >= 10) || 'Motivation must be at least 10 characters long'
                         ]"
                   required
                   v-model="editEnrollment.motivation"
@@ -89,7 +89,7 @@ export default class EnrollmentDialog extends Vue {
   }
 
   isValidMotivation(motivation: any) {
-    return motivation && motivation.replace(/\s+/g, '').trim().length >= 10;
+    return motivation && motivation.trim().length >= 10;
   }
 
 
