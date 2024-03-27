@@ -20,6 +20,7 @@ export default class Activity {
   formattedEndingDate!: string;
   applicationDeadline!: string;
   formattedApplicationDeadline!: string;
+  numberOfEnrollments: number | null = null;
 
   constructor(jsonObj?: Activity) {
     if (jsonObj) {
@@ -28,6 +29,7 @@ export default class Activity {
       this.region = jsonObj.region;
       this.numberOfParticipations = jsonObj.numberOfParticipations;
       this.participantsNumberLimit = jsonObj.participantsNumberLimit;
+      this.numberOfEnrollments = jsonObj.numberOfEnrollments;
       this.themes = jsonObj.themes.map((themes: Theme) => {
         return new Theme(themes);
       });

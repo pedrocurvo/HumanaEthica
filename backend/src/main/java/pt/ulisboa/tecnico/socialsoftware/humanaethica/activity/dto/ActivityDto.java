@@ -21,6 +21,7 @@ public class ActivityDto {
     private String creationDate;
     private List<ThemeDto> themes;
     private InstitutionDto institution;
+    private Integer numberOfEnrollments;
     private List<ParticipationDto> participations;
     private Integer numberOfParticipations;
 
@@ -49,6 +50,7 @@ public class ActivityDto {
         setStartingDate(DateHandler.toISOString(activity.getStartingDate()));
         setEndingDate(DateHandler.toISOString(activity.getEndingDate()));
         setApplicationDeadline(DateHandler.toISOString(activity.getApplicationDeadline()));
+        setNumberOfEnrollments(activity.getEnrollments().size());
 
         if (deepCopyInstitution && (activity.getInstitution() != null)) {
                 setInstitution(new InstitutionDto(activity.getInstitution(), false, false));
@@ -159,6 +161,14 @@ public class ActivityDto {
         this.participantsNumberLimit = participantsNumberLimit;
     }
 
+    public Integer getnumberOfEnrollments() {
+        return numberOfEnrollments;
+    }
+
+    public void setNumberOfEnrollments(Integer numberOfEnrollments) {
+        this.numberOfEnrollments = numberOfEnrollments;
+    }
+
     public List<ParticipationDto> getParticipations(){
         return this.participations;
     }
@@ -184,6 +194,7 @@ public class ActivityDto {
                 ", themes=" + themes +
                 ", participations=" + participations +
                 ", institution=" + institution +
+                ", numberOfEnrollments=" + numberOfEnrollments +
                 '}';
     }
 }

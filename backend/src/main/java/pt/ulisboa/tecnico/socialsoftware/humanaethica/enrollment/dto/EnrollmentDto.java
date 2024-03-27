@@ -5,6 +5,7 @@ import pt.ulisboa.tecnico.socialsoftware.humanaethica.utils.DateHandler;
 
 public class EnrollmentDto {
     private Integer id;
+
     private String motivation;
 
     private String enrollmentDateTime;
@@ -22,6 +23,8 @@ public class EnrollmentDto {
 
     public EnrollmentDto(Enrollment enrollment) {
         this.id = enrollment.getId();
+        this.volunteerId = enrollment.getVolunteer().getId();
+        this.activityId = enrollment.getActivity().getId();
         this.motivation = enrollment.getMotivation();
         this.enrollmentDateTime = DateHandler.toISOString(enrollment.getEnrollmentDateTime());
         this.volunteerId = enrollment.getVolunteer().getId();
@@ -36,6 +39,22 @@ public class EnrollmentDto {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getVolunteerId() {
+        return volunteerId;
+    }
+
+    public void setVolunteerId(Integer volunteerId) {
+        this.volunteerId = volunteerId;
+    }
+
+    public Integer getActivityId() {
+        return activityId;
+    }
+
+    public void setActivityId(Integer activityId) {
+        this.activityId = activityId;
     }
 
     public String getMotivation() {
@@ -54,14 +73,6 @@ public class EnrollmentDto {
         this.enrollmentDateTime = enrollmentDateTime;
     }
 
-    public Integer getVolunteerId() {
-        return volunteerId;
-    }
-
-    public void setVolunteer(Integer volunteerId) {
-        this.volunteerId = volunteerId;
-    }
-
     public String getVolunteerName() {
         return volunteerName;
     }
@@ -76,14 +87,6 @@ public class EnrollmentDto {
 
     public void setParticipating(Boolean participating) {
         this.participating = participating;
-    }
-
-    public Integer getActivityId() {
-        return activityId;
-    }
-
-    public void setActivityId(Integer activityId) {
-        this.activityId = activityId;
     }
 
 }

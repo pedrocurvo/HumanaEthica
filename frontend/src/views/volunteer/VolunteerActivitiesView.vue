@@ -27,7 +27,7 @@
           </v-chip>
         </template>
         <template v-slot:[`item.action`]="{ item }">
-          <v-tooltip v-if="item.state === 'APPROVED'" bottom>
+          <v-tooltip v-show="item.state === 'APPROVED'" bottom>
             <template v-slot:activator="{ on }">
               <v-icon
                 class="mr-2 action-button"
@@ -40,8 +40,32 @@
             </template>
             <span>Report Activity</span>
           </v-tooltip>
+          <v-tooltip v-if="item.state === 'APPROVED' && !verifyInvariants(item)" bottom> 
+            <template v-slot:activator="{ on, attrs }">
+              <v-icon
+                v-bind="attrs"
+                v-on="on"
+                class="mr-2 action-button"
+                color="blue"
+                data-cy="applyButton"
+                @click="newEnrollment(item)"
+              >
+                mdi-login
+              </v-icon>
+            </template>
+            <span>Apply for Activity</span>
+          </v-tooltip>
         </template>
       </v-data-table>
+
+      <enrollment-dialog
+        v-if="currentActivity && editEnrollmentDialog"
+        v-model="editEnrollmentDialog"
+        :enrollment="currentEnrollment"
+        :activity="currentActivity"
+        v-on:save-enrollment="onSaveEnrollment"
+        v-on:close-enrollment-dialog="onCloseEnrollmentDialog"
+      />
     </v-card>
   </div>
 </template>
@@ -51,12 +75,24 @@ import { Component, Vue } from 'vue-property-decorator';
 import RemoteServices from '@/services/RemoteServices';
 import Activity from '@/models/activity/Activity';
 import { show } from 'cli-cursor';
+import Volunteer from '@/models/volunteer/Volunteer';
+import Enrollment from '@/models/enrollment/Enrollment';
+import EnrollmentDialog from '@/views/volunteer/EnrollmentDialog.vue';
 
 @Component({
   methods: { show },
+  components: {
+    'enrollment-dialog': EnrollmentDialog,
+  },
 })
 export default class VolunteerActivitiesView extends Vue {
   activities: Activity[] = [];
+  enrollments: Enrollment[] = [];
+
+  currentEnrollment: Enrollment | null = null;
+  currentActivity: Activity | null = null;
+  editEnrollmentDialog: boolean = false;
+
   search: string = '';
   headers: object = [
     {
@@ -126,6 +162,7 @@ export default class VolunteerActivitiesView extends Vue {
     await this.$store.dispatch('loading');
     try {
       this.activities = await RemoteServices.getActivities();
+      this.enrollments = await RemoteServices.getVolunteerEnrollments();
     } catch (error) {
       await this.$store.dispatch('error', error);
     }
@@ -146,6 +183,43 @@ export default class VolunteerActivitiesView extends Vue {
       }
     }
   }
+
+  verifyInvariants(activity: Activity) {
+      console.log('verifyInvariants')
+      const now = new Date();
+      const applicationDeadline = new Date(activity.applicationDeadline);
+      const applied = this.enrollments.some(enrollment => enrollment.activityId == activity.id);
+      if (applied == true || now > applicationDeadline) {
+        console.log('hasAlreadyApplied: true')
+        return true;
+      }
+      else {
+        console.log('enrollmentPeriod: false')
+        return false;
+      }
+    }
+
+  newEnrollment(activity: Activity){
+    this.currentActivity = activity;
+    this.currentEnrollment = new Enrollment();
+    this.currentEnrollment.activityId = activity.id;
+    this.currentEnrollment.volunteerId = this.$store.getters.getUser.id;
+    this.editEnrollmentDialog = true;
+  }
+
+  onCloseEnrollmentDialog() {
+    this.currentEnrollment = null;
+    this.currentActivity = null;
+    this.editEnrollmentDialog = false;
+  }
+
+  async onSaveEnrollment(enrollment: Enrollment) {
+    this.editEnrollmentDialog = false;
+    this.currentActivity = null;
+    this.currentEnrollment = null;
+    window.location.reload();
+  }
+
 }
 </script>
 

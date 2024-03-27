@@ -469,11 +469,46 @@ export default class RemoteServices {
       });
   }
 
+  static async applyForActivity(userId: number, activityId: number) {
+    return httpClient
+      .post(`/activities/${activityId}/apply`, { userId: userId })
+      .then((response) => {
+        return new Activity(response.data);
+      })
+      .catch(async (error) => {
+        throw Error(await this.errorMessage(error));
+      });
+  }
+
   // Enrollment controller
 
   static async getActivityEnrollments(activityId: number) {
     return httpClient
       .get(`/activities/${activityId}/enrollments`)
+      .then((response) => {
+        return response.data.map((enrollment: any) => {
+          return new Enrollment(enrollment);
+        });
+      })
+      .catch(async (error) => {
+        throw Error(await this.errorMessage(error));
+      });
+  }
+
+  static async createEnrollment(activityId: number, enrollment: Enrollment) {
+    return httpClient
+      .post(`activities/${activityId}/enrollments`, enrollment)
+      .then((response) => {
+        return new Enrollment(response.data);
+      })
+      .catch(async (error) => {
+        throw Error(await this.errorMessage(error));
+      });
+  }
+
+  static async getVolunteerEnrollments() {
+    return httpClient
+      .get('/enrollments/volunteer')
       .then((response) => {
         return response.data.map((enrollment: any) => {
           return new Enrollment(enrollment);
