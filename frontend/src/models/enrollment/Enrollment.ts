@@ -7,10 +7,8 @@ export default class Enrollment {
   activityId: number | null = null;
   motivation!: string;
   enrollmentDateTime!: string;
-  volunteerId!: number;
   volunteerName: string | null = null;
   participating: boolean = false;
-  activityId!: number;
 
   constructor(jsonObj?: Enrollment) {
     if (jsonObj) {
