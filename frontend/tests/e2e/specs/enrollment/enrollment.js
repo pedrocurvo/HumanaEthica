@@ -30,7 +30,7 @@ describe('Enrollment', () => {
         .should('have.length', 3);
         // Check if the first activity has 0 applications
         cy.get('[data-cy="memberActivitiesTable"] tbody tr')
-        .eq(0).children().eq(3).should('contain', 0);
+        .eq(0).children().eq(4).should('contain', 0);
         cy.logout();
 
         // Enter in Volunteer Demo
@@ -61,9 +61,9 @@ describe('Enrollment', () => {
         // Check if there are 3 activities
         cy.get('[data-cy="memberActivitiesTable"] tbody tr')
         .should('have.length', 3);
-        // Check if the first activity has 0 applications
+        // Check if the first activity has 1 applications
         cy.get('[data-cy="memberActivitiesTable"] tbody tr')
-        .eq(0).children().eq(3).should('contain', 1);
+        .eq(0).children().eq(4).should('contain', 1);
         // Check motivation
         cy.get('[data-cy="showEnrollments"]').first().click();
         cy.get('[data-cy="activityEnrollmentsTable"] tbody tr').
